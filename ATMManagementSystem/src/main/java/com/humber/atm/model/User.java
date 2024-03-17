@@ -12,12 +12,32 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private Date dateofbirth;
-	private String accountNo;
+	private String account_no;
 	private Gender gender;
 	
 	private int roleid;
-	private String rolename;
+	
 	private boolean status;
+	
+	private String email;
+	
+	private String phone;
+	
+	
+	
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	public int getUserid() {
 		return userid;
 	}
@@ -55,10 +75,10 @@ public class User {
 		this.dateofbirth = dateofbirth;
 	}
 	public String getAccountNo() {
-		return accountNo;
+		return account_no;
 	}
 	public void setAccountNo(String accountNo) {
-		this.accountNo = accountNo;
+		this.account_no = accountNo;
 	}
 	public Gender getGender() {
 		return gender;
@@ -72,12 +92,7 @@ public class User {
 	public void setRoleid(int roleid) {
 		this.roleid = roleid;
 	}
-	public String getRolename() {
-		return rolename;
-	}
-	public void setRolename(String rolename) {
-		this.rolename = rolename;
-	}
+	
 	public boolean isStatus() {
 		return status;
 	}

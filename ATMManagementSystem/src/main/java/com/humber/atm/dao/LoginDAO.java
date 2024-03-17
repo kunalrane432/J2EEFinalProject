@@ -5,13 +5,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.humber.atm.model.User;
 import com.humber.atm.util.DatabaseUtil;
 
 
 public class LoginDAO {
 
-	public boolean getUserActiveStatus(String username,String password) throws SQLException {
+	public User getUserActiveStatus(String username,String password) throws SQLException {
 		
+		User user=null;
 		String sql = "SELECT * FROM User WHERE username = ? and password=? and status=?";
 		Connection con=DatabaseUtil.getConnection();
 		PreparedStatement statement = con.prepareStatement(sql);
@@ -20,15 +23,17 @@ public class LoginDAO {
 		statement.setBoolean(3, true);
 		
 		ResultSet resultSet = statement.executeQuery();
-		boolean flag=false;
+		//boolean flag=false;
 		if (resultSet.next()) {
-			flag=true;
+			user=new User();
+			user.setAccountNo(resultSet.getString("account_no"));
+			user.setUserid(resultSet.getInt("userid"));
 			
 		}
 		
 		resultSet.close();
 		statement.close();
 		DatabaseUtil.closeConnection(con);
-		return flag;
+		return user;
 	}
 }

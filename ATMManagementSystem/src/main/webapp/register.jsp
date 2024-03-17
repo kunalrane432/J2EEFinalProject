@@ -136,6 +136,23 @@ button {
     			<option value="FEMALE">Female</option>
     			<option value="NOT_SPECIFIED">Not_Specified</option>
     		</select>    
+    		
+    		 <label for="email">
+                  Email:
+              </label>
+            <input type="text"
+                   id="email"
+                   name="email"
+                   placeholder="Enter your Email" required>  
+                   
+              <label for="phone">
+                  Phone Number:
+              </label>
+            <input type="text"
+                   id="phone"
+                   name="phone"
+                   placeholder="Enter your Phone Number" required>        
+                   
                    
                                
  
