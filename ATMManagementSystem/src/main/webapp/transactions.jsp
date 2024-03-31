@@ -29,6 +29,8 @@
 				value="viewstatement" />
 			<input type="hidden" id="userid" name="userid"
 				value="${sessionScope.userid}" />
+			<input type="hidden" id="username" name="username"
+				value="${sessionScope.username}" />	
 			<div class="flex-container">
 
 				<div class="flex-child magenta">

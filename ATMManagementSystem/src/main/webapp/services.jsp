@@ -29,6 +29,8 @@
 				value="" />
 			<input type="hidden" id="userid" name="userid"
 				value="${sessionScope.userid}" />
+			<input type="hidden" id="username" name="username"
+				value="${sessionScope.username}" />	
 			<div class="transaction-buttons">
 
 				<div class="button">

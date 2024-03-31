@@ -25,6 +25,8 @@
 		<form id="myForm" action="ServicesServlet" method="get">
 			<input type="hidden" id="operation" name="operation"
 				value="viewbalance" />
+			<input type="hidden" id="username" name="username"
+				value="${sessionScope.username}" />	
 			<input type="hidden" id="userid" name="userid"
 				value="${sessionScope.userid}" />
 			<div class="flex-container">

@@ -43,6 +43,7 @@ public class ViewBalanceServlet extends HttpServlet {
 		int userid=Integer.valueOf(request.getParameter("userid"));
 		System.out.println("USer id in view balance" + userid);
 		String username=request.getParameter("username");
+		System.out.println("USERNAME *******"+username);
 		try {
 			List<Account> accounts=service.getBalance(userid);
 			

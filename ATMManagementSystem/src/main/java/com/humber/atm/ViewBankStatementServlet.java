@@ -48,7 +48,7 @@ public class ViewBankStatementServlet extends HttpServlet {
 		RequestDispatcher dispatcher = null;
 		//int userid=Integer.valueOf(request.getParameter("userid"));
 		//System.out.println("USer id in credit amount" + userid);
-		//String username=request.getParameter("username");
+		String username=request.getParameter("username");
 		
 		
 		String operation=request.getParameter("operation");
@@ -56,9 +56,10 @@ public class ViewBankStatementServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		User user=(User)session.getAttribute("user");
-        session.setAttribute("username", user.getUsername());
+        session.setAttribute("username", username);
         session.setAttribute("userid", user.getUserid());	
-        
+        System.out.println("USERNAME in TRANSACTIONS : "+username);
+        System.out.println("USERID in TRANSACTIONS : "+user.getUserid());
         List<Transactions> transactions=new ArrayList<Transactions>();
         System.out.println("Operations : "+operation);
         if(operation.equals("viewstatement"))
