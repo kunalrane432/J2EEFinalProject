@@ -42,64 +42,99 @@ public class ViewBankStatementServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		
-		System.out.println("ViewBankStatament Get method called");
 		RequestDispatcher dispatcher = null;
-		//int userid=Integer.valueOf(request.getParameter("userid"));
-		//System.out.println("USer id in credit amount" + userid);
-		String username=request.getParameter("username");
-		
-		
-		String operation=request.getParameter("operation");
-		
-		
-		HttpSession session = request.getSession();
-		User user=(User)session.getAttribute("user");
-        session.setAttribute("username", username);
-        session.setAttribute("userid", user.getUserid());	
-        System.out.println("USERNAME in TRANSACTIONS : "+username);
-        System.out.println("USERID in TRANSACTIONS : "+user.getUserid());
-        List<Transactions> transactions=new ArrayList<Transactions>();
-        System.out.println("Operations : "+operation);
-        if(operation.equals("viewstatement"))
-        {
-        	try {
-				Date from = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("from"));
-				Date to =new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("to"));
-				System.out.println("from"+from.getDate());
-				System.out.println("to"+to.getDate());
-				try {
-					transactions=service.getTransactions(user.getAccountNo(), from, to);
-					System.out.println("Transactions retrieved");
-					session.setAttribute("transactions", transactions);
+		HttpSession session=request.getSession(false);
+		if(session.getAttribute("username")!=null)
+		{
+			System.out.println("ViewBankStatament Get method called");
+			
+			//int userid=Integer.valueOf(request.getParameter("userid"));
+			//System.out.println("USer id in credit amount" + userid);
+			String username=request.getParameter("username");
+			
+			
+			String operation=request.getParameter("operation");
+			
+			
+			 
+			User user=(User)session.getAttribute("user");
+	        session.setAttribute("username", username);
+	        session.setAttribute("userid", user.getUserid());	
+	        System.out.println("USERNAME in TRANSACTIONS : "+username);
+	        System.out.println("USERID in TRANSACTIONS : "+user.getUserid());
+	        List<Transactions> transactions=null;
+	        System.out.println("Operations : "+operation);
+	        if(operation.equals("viewstatement"))
+	        {
+	        	
+	        	if(request.getParameter("from").equals("") || request.getParameter("to").equals(""))
+	        	{
+	        		System.out.println("Cannot Move Money more than your Balance");
+					request.setAttribute("message", "Invalid Transaction Dates.");
+					session.setAttribute("username", username);
+		            session.setAttribute("userid", user.getUserid());
+		            session.setAttribute("transactions", transactions);
 					dispatcher = request.getRequestDispatcher("transactions.jsp");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					System.out.println("inner catch");
-					dispatcher = request.getRequestDispatcher("error.jsp");
-				}
-				
-				
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println("outter ctach");
-				dispatcher = request.getRequestDispatcher("error.jsp");
-			}
-        	finally
-        	{
-        		dispatcher.forward(request, response);
-        	}
-        }
-        else
-        {
-        	System.out.println("operation is null");
-        	dispatcher = request.getRequestDispatcher("transactions.jsp");
-        	session.setAttribute("transactions", transactions);
-        	dispatcher.forward(request, response);
-        }
+					dispatcher.forward(request, response);
+	        	}
+	        	else
+	        	{
+	        		try {
+						Date from = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("from"));
+						Date to =new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("to"));
+						System.out.println("from"+from.getDate());
+						System.out.println("to"+to.getDate());
+						try {
+							transactions=service.getTransactions(user.getAccountNo(), from, to);
+							System.out.println("Transactions retrieved");
+							if(transactions.size()==0)
+							{
+								transactions=null;
+								request.setAttribute("message", "No Transactions in Date Range");
+								session.setAttribute("username", username);
+					            session.setAttribute("userid", user.getUserid());
+					            session.setAttribute("transactions", transactions);
+							}
+								
+							session.setAttribute("transactions", transactions);
+							dispatcher = request.getRequestDispatcher("transactions.jsp");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							System.out.println("inner catch");
+							dispatcher = request.getRequestDispatcher("error.jsp");
+						}
+						
+						
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						System.out.println("outter ctach");
+						dispatcher = request.getRequestDispatcher("error.jsp");
+					}
+		        	finally
+		        	{
+		        		dispatcher.forward(request, response);
+		        	}
+	        	}
+	        	
+	        	
+	        }
+	        else
+	        {
+	        	System.out.println("operation is null");
+	        	dispatcher = request.getRequestDispatcher("transactions.jsp");
+	        	session.setAttribute("transactions", transactions);
+	        	dispatcher.forward(request, response);
+	        }
+		}
+		else
+		{
+			dispatcher = request.getRequestDispatcher("login.jsp");
+	        dispatcher.forward(request, response); 
+		}
+		
+		
         
         
         

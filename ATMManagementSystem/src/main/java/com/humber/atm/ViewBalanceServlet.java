@@ -40,51 +40,62 @@ public class ViewBalanceServlet extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		RequestDispatcher dispatcher = null;
-		int userid=Integer.valueOf(request.getParameter("userid"));
-		System.out.println("USer id in view balance" + userid);
-		String username=request.getParameter("username");
-		System.out.println("USERNAME *******"+username);
-		try {
-			List<Account> accounts=service.getBalance(userid);
-			
-			if(accounts.size()>0)
-			{
-				HttpSession session = request.getSession();
-	            session.setAttribute("username", username);
-	            session.setAttribute("userid", userid);	
-	            session.setAttribute("accounts", accounts);
-	            for(Account a:accounts)
-	            {
-	            	if(a.getAccount_type().equals("Savings"))
+		HttpSession session=request.getSession(false);  
+		if(session.getAttribute("username")!=null)
+		{
+			int userid=Integer.valueOf(request.getParameter("userid"));
+			System.out.println("USer id in view balance" + userid);
+			String username=request.getParameter("username");
+			System.out.println("USERNAME *******"+username);
+			try {
+				List<Account> accounts=service.getBalance(userid);
+				
+				if(accounts.size()>0)
+				{
+					//HttpSession session = request.getSession();
+		            session.setAttribute("username", username);
+		            session.setAttribute("userid", userid);	
+		            session.setAttribute("accounts", accounts);
+		            for(Account a:accounts)
 		            {
-	            		session.setAttribute("savings_account", a.getAmount());
+		            	if(a.getAccount_type().equals("Savings"))
+			            {
+		            		session.setAttribute("savings_account", a.getAmount());
+			            }
+		            	else
+		            	{
+		            		session.setAttribute("chequing_account", a.getAmount());
+		            	}
 		            }
-	            	else
-	            	{
-	            		session.setAttribute("chequing_account", a.getAmount());
-	            	}
-	            }
-	            
-	            
-	            
-	            dispatcher = request.getRequestDispatcher("viewbalance.jsp");
+		            
+		            
+		            
+		            dispatcher = request.getRequestDispatcher("viewbalance.jsp");
+				}
+				else
+				{
+					System.out.println("account does not exist");
+					//HttpSession session = request.getSession();
+		            session.setAttribute("username", username);
+					dispatcher = request.getRequestDispatcher("services.jsp");
+				}
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				dispatcher = request.getRequestDispatcher("error.jsp");
 			}
-			else
-			{
-				System.out.println("account does not exist");
-				HttpSession session = request.getSession();
-	            session.setAttribute("username", username);
-				dispatcher = request.getRequestDispatcher("services.jsp");
+			finally {
+				dispatcher.forward(request, response);
 			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			dispatcher = request.getRequestDispatcher("error.jsp");
 		}
-		finally {
-			dispatcher.forward(request, response);
+		else
+		{
+			dispatcher = request.getRequestDispatcher("login.jsp");
+	        dispatcher.forward(request, response); 
 		}
+		
+		
 		
 		
 	}

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +26,12 @@
         <div class="wrap">
           <button type="submit">Submit</button>
         </div>
+        <c:if test="${message != null}">
+            <div class="wrap">
+        		<h2><c:out value='${message }'/></h2>
+        	</div>
+        </c:if>
+        
       </form>
       <p>Not registered? <a href="/ATM_Management_System/RegisterServlet" style="text-decoration: none;">Create an account</a></p>
     </div>

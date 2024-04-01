@@ -13,8 +13,8 @@
 <header>
 <div class="navbar">
   		
-  		<a href="services.jsp">Services</a>
-  		<a href="contact.jsp">Help</a>
+  		<a href="/ATM_Management_System/ServicesServlet?username=<c:out value='${sessionScope.username}'/>&userid=<c:out value='${sessionScope.userid}'/>">Services</a>
+  		<a href="/ATM_Management_System/ContactServlet?username=<c:out value='${sessionScope.username}'/>&userid=<c:out value='${sessionScope.userid}'/>">Help</a>
   		<a href="/ATM_Management_System/LogoutServlet" class="logout-link">Logout</a>
   		</div>
 </header>
@@ -57,11 +57,16 @@
 						<button id="viewstatement" type="button">View Bank
 						Statement</button>
 
-				
+						<c:if test="${message != null}">
+            				<div class="wrap">
+        						<h2><c:out value='${message }'/></h2>
+        					</div>
+        				</c:if>
 
 
 				</div>
 				
+				<c:if test="${transactions != null}">
 				<div id="transaction-table">
 					<table border="1">
 						<tr>
@@ -82,7 +87,7 @@
 						</c:forEach>
 					</table>
 				</div>
-
+				</c:if>
 				
 				
 			</div>

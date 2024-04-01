@@ -38,15 +38,25 @@ public class DebitAmountServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		System.out.println("Debit Get method called");
 		RequestDispatcher dispatcher = null;
-		int userid=Integer.valueOf(request.getParameter("userid"));
-		System.out.println("USer id in credit amount" + userid);
-		String username=request.getParameter("username");
 		
-		HttpSession session = request.getSession();
-        session.setAttribute("username", username);
-        session.setAttribute("userid", userid);	
-        dispatcher = request.getRequestDispatcher("withdraw.jsp");
-        dispatcher.forward(request, response);
+		
+		HttpSession session=request.getSession(false);
+		if(session.getAttribute("username")!=null)
+		{
+			int userid=Integer.valueOf(request.getParameter("userid"));
+			System.out.println("USer id in credit amount" + userid);
+			String username=request.getParameter("username");
+			session.setAttribute("username", username);
+	        session.setAttribute("userid", userid);	
+	        dispatcher = request.getRequestDispatcher("withdraw.jsp");
+	        dispatcher.forward(request, response);
+		}
+		else
+		{
+			dispatcher = request.getRequestDispatcher("login.jsp");
+	        dispatcher.forward(request, response);
+		}
+        
 	}
 
 	/**
@@ -55,72 +65,98 @@ public class DebitAmountServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		RequestDispatcher dispatcher = null;
-		int userid=Integer.valueOf(request.getParameter("userid"));
-		System.out.println("USer id in debit amount" + userid);
-		String username=request.getParameter("username");
 		
-		String account_type=request.getParameter("account_type");
-		double amount=Double.parseDouble(request.getParameter("amount"));
 		
-		HttpSession session = request.getSession();
-		User user=(User)session.getAttribute("user");
-		System.out.println("Account Type : "+userid);
-		System.out.println("Account Type : "+account_type);
-		System.out.println("account number : "+user.getAccountNo());
-		try {
-			Account account=service.getAccountDetails(userid, user.getAccountNo(), account_type);
-			if(account!=null)
+		HttpSession session=request.getSession(false);
+		if(session.getAttribute("username")!=null)
+		{
+			int userid=Integer.valueOf(request.getParameter("userid"));
+			System.out.println("USer id in withdraw amount" + userid);
+			String username=request.getParameter("username");
+			
+			String account_type=request.getParameter("account_type");
+			double amount=Double.parseDouble(request.getParameter("amount"));
+			if(amount<0)
 			{
-				double temp=account.getAmount();
-				temp-=amount;
-				
-				if(temp>0)
-				{
-					if(service.updateAmount(account_type, user.getUserid(),temp , user.getAccountNo())){
-						Transactions transactions=new Transactions();
-						
-						transactions.setAccount_no(user.getAccountNo());
-						transactions.setAmount(amount);
-						transactions.setTransaction_type("Withdraw From "+account_type);
-						
-						if(service.addTransaction(transactions))
-						{
-							session.setAttribute("username", username);
-				            session.setAttribute("userid", userid);	
-				            dispatcher = request.getRequestDispatcher("services.jsp");
-						}
-						else
-						{
-							dispatcher = request.getRequestDispatcher("debit.jsp");
-						}
-			            
-					}
-					else
-					{
-						dispatcher = request.getRequestDispatcher("debit.jsp");
-					}
-				}
-				else
-				{
-					System.out.println("Cannot Withdraw more than your Balance");
-					dispatcher = request.getRequestDispatcher("error.jsp");
-				}
-				
+				request.setAttribute("message", "Invalid Amount");
+				session.setAttribute("username", username);
+	            session.setAttribute("userid", userid);
+				dispatcher = request.getRequestDispatcher("withdraw.jsp");
+				dispatcher.forward(request, response);
 			}
 			else
 			{
-				dispatcher = request.getRequestDispatcher("error.jsp");
+				User user=(User)session.getAttribute("user");
+				System.out.println("Account Type : "+userid);
+				System.out.println("Account Type : "+account_type);
+				System.out.println("account number : "+user.getAccountNo());
+				try {
+					Account account=service.getAccountDetails(userid, user.getAccountNo(), account_type);
+					if(account!=null)
+					{
+						
+						double temp=account.getAmount();
+						temp-=amount;
+						
+						if(temp>0)
+						{
+							if(service.updateAmount(account_type, user.getUserid(),temp , user.getAccountNo())){
+								Transactions transactions=new Transactions();
+								
+								transactions.setAccount_no(user.getAccountNo());
+								transactions.setAmount(amount);
+								transactions.setTransaction_type("Withdraw From "+account_type);
+								
+								if(service.addTransaction(transactions))
+								{
+									session.setAttribute("username", username);
+						            session.setAttribute("userid", userid);	
+						            dispatcher = request.getRequestDispatcher("services.jsp");
+								}
+								else
+								{
+									dispatcher = request.getRequestDispatcher("withdraw.jsp");
+								}
+					            
+							}
+							else
+							{
+								dispatcher = request.getRequestDispatcher("withdraw.jsp");
+							}
+						}
+						else
+						{
+							System.out.println("Cannot Withdraw more than your Balance");
+							request.setAttribute("message", "Amount Cannot be greater than account balance. Please check you balance.");
+							session.setAttribute("username", username);
+				            session.setAttribute("userid", userid);
+							dispatcher = request.getRequestDispatcher("withdraw.jsp");
+						}
+						
+					}
+					else
+					{
+						dispatcher = request.getRequestDispatcher("error.jsp");
+					}
+					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					dispatcher = request.getRequestDispatcher("error.jsp");
+				}
+				finally
+				{
+					dispatcher.forward(request, response);
+				}
 			}
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			dispatcher = request.getRequestDispatcher("error.jsp");
 		}
-		finally
+		else
 		{
-			dispatcher.forward(request, response);
+			dispatcher = request.getRequestDispatcher("login.jsp");
+	        dispatcher.forward(request, response);
 		}
+		
 	}
 
 }

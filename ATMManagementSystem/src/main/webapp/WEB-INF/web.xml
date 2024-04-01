@@ -114,4 +114,32 @@
     <servlet-name>DownloadStatementServlet</servlet-name>
     <url-pattern>/DownloadStatementServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ContactServlet</display-name>
+    <servlet-name>ContactServlet</servlet-name>
+    <servlet-class>com.humber.atm.ContactServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ContactServlet</servlet-name>
+    <url-pattern>/ContactServlet</url-pattern>
+  </servlet-mapping>
+  
+  <context-param>
+	<param-name>host</param-name>
+	<param-value>smtp.gmail.com</param-value>
+  </context-param>
+ <context-param>
+	<param-name>port</param-name>
+	<param-value>587</param-value>
+ </context-param>
+ <context-param>
+	<param-name>user</param-name>
+    <param-value>kunalrane.humber@gmail.com</param-value>
+ </context-param>
+ <context-param>
+	<param-name>pass</param-name>
+	<param-value>xoudgmgjflwcfxf</param-value>
+ </context-param>
+  
 </web-app>

@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
 		
 		LoginDAO loginDAO=new LoginDAO();
 		RequestDispatcher dispatcher = null;
-		
+		HttpSession session = request.getSession();
 		System.out.println("USERNAME :"+username);
 		System.out.println("password :"+password);
 		try {
@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
 			if(user!=null)
 			{
 				System.out.println("Credentials Successful");
-				HttpSession session = request.getSession();
+				
 	            session.setAttribute("username", username);
 	            session.setAttribute("userid", user.getUserid());
 	            session.setAttribute("user", user);
@@ -68,7 +68,8 @@ public class LoginServlet extends HttpServlet {
 			else
 			{
 				System.out.println("User does not exist");
-				dispatcher = request.getRequestDispatcher("register.jsp");
+				request.setAttribute("message", "Invalid Username or Password");
+				dispatcher = request.getRequestDispatcher("login.jsp");
 			}
 			//dispatcher.forward(request, response);
 		} catch (SQLException e) {

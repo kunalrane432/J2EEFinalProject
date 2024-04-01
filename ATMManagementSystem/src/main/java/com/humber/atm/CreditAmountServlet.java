@@ -40,15 +40,27 @@ public class CreditAmountServlet extends HttpServlet {
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 		System.out.println("Credit Get method called");
 		RequestDispatcher dispatcher = null;
-		int userid=Integer.valueOf(request.getParameter("userid"));
-		System.out.println("USer id in credit amount" + userid);
-		String username=request.getParameter("username");
 		
-		HttpSession session = request.getSession();
-        session.setAttribute("username", username);
-        session.setAttribute("userid", userid);	
-        dispatcher = request.getRequestDispatcher("credit.jsp");
-        dispatcher.forward(request, response);
+		
+		//HttpSession session = request.getSession();
+		HttpSession session=request.getSession(false);  
+		System.out.println("SESSION IN CREDIT PAGE"+session.getAttribute("username"));
+		if(session.getAttribute("username")!=null)
+		{
+			int userid=Integer.valueOf(request.getParameter("userid"));
+			System.out.println("USer id in credit amount" + userid);
+			String username=request.getParameter("username");
+			session.setAttribute("username", username);
+	        session.setAttribute("userid", userid);	
+	        dispatcher = request.getRequestDispatcher("credit.jsp");
+	        dispatcher.forward(request, response);
+		}
+		else
+		{
+			dispatcher = request.getRequestDispatcher("login.jsp");
+	        dispatcher.forward(request, response); 
+		}
+        
 		
 	}
 
@@ -58,64 +70,86 @@ public class CreditAmountServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		RequestDispatcher dispatcher = null;
-		int userid=Integer.valueOf(request.getParameter("userid"));
-		System.out.println("USer id in credit amount" + userid);
-		String username=request.getParameter("username");
-		
-		String account_type=request.getParameter("account_type");
-		double amount=Double.parseDouble(request.getParameter("amount"));
-		
-		HttpSession session = request.getSession();
-		User user=(User)session.getAttribute("user");
 		
 		
+		HttpSession session=request.getSession(false);  
 		
-		
-		
-		try {
-			Account account=service.getAccountDetails(userid, user.getAccountNo(), account_type);
-			if(account!=null)
+		if(session.getAttribute("username")!=null)
+		{
+			int userid=Integer.valueOf(request.getParameter("userid"));
+			System.out.println("USer id in credit amount" + userid);
+			String username=request.getParameter("username");
+			
+			String account_type=request.getParameter("account_type");
+			double amount=Double.parseDouble(request.getParameter("amount"));
+			
+			if(amount<0)
 			{
-				double temp=amount+account.getAmount();
-				if(service.updateAmount(account_type, user.getUserid(),temp , user.getAccountNo())){
-					Transactions transactions=new Transactions();
-					
-					transactions.setAccount_no(user.getAccountNo());
-					transactions.setAmount(amount);
-					transactions.setTransaction_type("Credit To "+account_type);
-					
-					if(service.addTransaction(transactions))
-					{
-						session.setAttribute("username", username);
-			            session.setAttribute("userid", userid);	
-			            dispatcher = request.getRequestDispatcher("services.jsp");
-					}
-					else
-					{
-						dispatcher = request.getRequestDispatcher("credit.jsp");
-					}
-		            
-				}
-				else
-				{
-					dispatcher = request.getRequestDispatcher("credit.jsp");
-				}
+				System.out.println("Amount is less than zero");
+				request.setAttribute("message", "Invalid Amount");
+				dispatcher = request.getRequestDispatcher("credit.jsp");
+				session.setAttribute("username", username);
+	            session.setAttribute("userid", userid);
+				dispatcher.forward(request, response);
 			}
 			else
 			{
-				System.out.println("Error fetching account details");
-				dispatcher = request.getRequestDispatcher("error.jsp");
+				User user=(User)session.getAttribute("user");
+				try {
+					System.out.println("Credit added");
+					Account account=service.getAccountDetails(userid, user.getAccountNo(), account_type);
+					if(account!=null)
+					{
+						double temp=amount+account.getAmount();
+						if(service.updateAmount(account_type, user.getUserid(),temp , user.getAccountNo())){
+							Transactions transactions=new Transactions();
+							
+							transactions.setAccount_no(user.getAccountNo());
+							transactions.setAmount(amount);
+							transactions.setTransaction_type("Credit To "+account_type);
+							
+							if(service.addTransaction(transactions))
+							{
+								session.setAttribute("username", username);
+					            session.setAttribute("userid", userid);	
+					            dispatcher = request.getRequestDispatcher("services.jsp");
+							}
+							else
+							{
+								dispatcher = request.getRequestDispatcher("credit.jsp");
+							}
+				            
+						}
+						else
+						{
+							dispatcher = request.getRequestDispatcher("credit.jsp");
+						}
+					}
+					else
+					{
+						System.out.println("Error fetching account details");
+						dispatcher = request.getRequestDispatcher("error.jsp");
+					}
+					
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					dispatcher = request.getRequestDispatcher("error.jsp");
+				}
+				finally {
+					dispatcher.forward(request, response);
+				}
 			}
 			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			dispatcher = request.getRequestDispatcher("error.jsp");
+			
+			
 		}
-		finally
+		else
 		{
-			dispatcher.forward(request, response);
+			dispatcher = request.getRequestDispatcher("login.jsp");
+	        dispatcher.forward(request, response);
 		}
+		
 		
 		
 		
