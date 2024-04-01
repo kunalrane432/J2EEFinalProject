@@ -41,7 +41,7 @@
 				</div>
 				
 				<div class="button">
-					<button id="credit" type="button">Credit</button>
+					<button id="credit" type="button">Deposit</button>
 
 				</div>
 				<div class="button">

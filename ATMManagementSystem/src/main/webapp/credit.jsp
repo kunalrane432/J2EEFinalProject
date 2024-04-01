@@ -22,7 +22,7 @@
 		<h1>ATM Management System</h1>
 		<h1>Welcome, ${sessionScope.username}!</h1>
 		
-		<h3>Credit Amount</h3>
+		<h3>Deposit Amount</h3>
 		<form id="myForm" action="CreditAmountServlet" method="post">
 			<input type="hidden" id="operation" name="operation"
 				value="viewbalance" />

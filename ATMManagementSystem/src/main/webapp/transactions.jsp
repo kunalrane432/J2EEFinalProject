@@ -70,7 +70,7 @@
 				<div id="transaction-table">
 					<table border="1">
 						<tr>
-							<th>Transaction ID</th>
+							<!-- <th>Transaction ID</th>  -->
 							<th>Transaction Type</th>
 							<th>Transaction Date</th>
 							<th>Transaction Amount</th>
@@ -79,7 +79,7 @@
 						
 						<c:forEach var="transactions" items="${transactions}">
 							<tr>
-								<td>${transactions.transactionid}</td>
+								<!-- <td>${transactions.transactionid}</td> -->
 								<td>${transactions.transaction_type}</td>
 								<td>${transactions.transaction_date}</td>
 								<td>${transactions.amount}</td>	

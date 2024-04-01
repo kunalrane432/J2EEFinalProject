@@ -1,9 +1,8 @@
 package com.humber.atm.model;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
-public class Transactions {
+public class Transactions{
 
 	
 	private String transactionid;
@@ -60,6 +59,8 @@ public class Transactions {
 		return "Transactions [transactionid=" + transactionid + ", account_no=" + account_no + ", transaction_type="
 				+ transaction_type + ", transaction_date=" + transaction_date + ", amount=" + amount + "]";
 	}
+
+	
 	
 	
 	
