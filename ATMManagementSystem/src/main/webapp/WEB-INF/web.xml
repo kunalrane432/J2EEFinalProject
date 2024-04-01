@@ -10,7 +10,7 @@
     <servlet-name>HomeServlet</servlet-name>
     <url-pattern>/HomeServlet</url-pattern>
   </servlet-mapping>
-  <display-name>ATMManagementSystem</display-name>
+  <display-name>Online Banking System</display-name>
   <welcome-file-list>
     <welcome-file>login.jsp</welcome-file>
   </welcome-file-list>

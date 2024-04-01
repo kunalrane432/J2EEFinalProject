@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Online Banking System</title>
 </head>
 <body>
 	<h1>Contact Admin. Some Error Occured</h1>

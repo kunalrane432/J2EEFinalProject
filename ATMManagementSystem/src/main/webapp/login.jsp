@@ -5,14 +5,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ATM Management System - Login</title>
+  <title>Online Banking System - Login</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
  <link rel = "stylesheet" type = "text/css" href ="style1.css">
 </head>
 <body>
   <div class="login-bg">
     <div class="main">
-      <h1>ATM Management System</h1>
+      <h1>Online Banking System</h1>
       <h3>Enter your login credentials</h3>
       <form action="LoginServlet" method="post" onsubmit="return validateLoginForm()">
         <div class="form-group">

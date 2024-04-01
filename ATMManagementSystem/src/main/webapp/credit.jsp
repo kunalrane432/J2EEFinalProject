@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ATM Management System</title>
+<title>Online Banking System</title>
 <link rel = "stylesheet" type = "text/css" href ="style1.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
 </header>
 
 	<div class="main">
-		<h1>ATM Management System</h1>
+		<h1>Online Banking System</h1>
 		<h1>Welcome, ${sessionScope.username}!</h1>
 		
 		<h3>Deposit Amount</h3>
@@ -70,7 +70,7 @@
 		</form>
 
 	</div>
-<footer><h1 class="footer">ATM Management System</h1></footer>
+<footer><h1 class="footer">Online Banking System</h1></footer>
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 	<script>
