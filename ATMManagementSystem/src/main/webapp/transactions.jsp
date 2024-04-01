@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ATM Management System</title>
+<title>Online Banking System</title>
 <link rel = "stylesheet" type = "text/css" href ="style1.css">
  <script src="trans.js"></script> 
 </head>
@@ -20,7 +20,7 @@
 </header>
 
 	<div class="main">
-		<h1>ATM Management System</h1>
+		<h1>Online Banking System</h1>
 		<h1>Welcome, ${sessionScope.username}!</h1>
 		
 		<h3>You Can View Transactions Here</h3>
@@ -70,7 +70,7 @@
 				<div id="transaction-table">
 					<table border="1">
 						<tr>
-							<th>Transaction ID</th>
+							<!-- <th>Transaction ID</th>  -->
 							<th>Transaction Type</th>
 							<th>Transaction Date</th>
 							<th>Transaction Amount</th>
@@ -79,7 +79,7 @@
 						
 						<c:forEach var="transactions" items="${transactions}">
 							<tr>
-								<td>${transactions.transactionid}</td>
+								<!-- <td>${transactions.transactionid}</td> -->
 								<td>${transactions.transaction_type}</td>
 								<td>${transactions.transaction_date}</td>
 								<td>${transactions.amount}</td>	
@@ -94,7 +94,7 @@
 		</form>
 
 	</div>
-<footer><h1 class="footer">ATM Management System</h1></footer>
+<footer><h1 class="footer">Online Banking System</h1></footer>
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 	<script>

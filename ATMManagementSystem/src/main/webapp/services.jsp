@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ATM Management System</title>
+<title>Online Banking System</title>
 <link rel = "stylesheet" type = "text/css" href ="style1.css">
 
 </head>
@@ -41,7 +41,7 @@
 				</div>
 				
 				<div class="button">
-					<button id="credit" type="button">Credit</button>
+					<button id="credit" type="button">Deposit</button>
 
 				</div>
 				<div class="button">
@@ -62,7 +62,7 @@
 		</form>
 
 	</div>
-<footer><h1 class="footer">ATM Management System</h1></footer>
+<footer><h1 class="footer">Online Banking System</h1></footer>
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 	<script>

@@ -13,12 +13,14 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.humber.atm.dao.ServicesDAO;
 import com.humber.atm.model.Transactions;
 import com.humber.atm.model.User;
+import com.humber.atm.util.SortbyTransactionDate;
 
 /**
  * Servlet implementation class ViewBankStatementServlet
@@ -82,28 +84,42 @@ public class ViewBankStatementServlet extends HttpServlet {
 	        		try {
 						Date from = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("from"));
 						Date to =new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("to"));
-						System.out.println("from"+from.getDate());
-						System.out.println("to"+to.getDate());
-						try {
-							transactions=service.getTransactions(user.getAccountNo(), from, to);
-							System.out.println("Transactions retrieved");
-							if(transactions.size()==0)
-							{
-								transactions=null;
-								request.setAttribute("message", "No Transactions in Date Range");
-								session.setAttribute("username", username);
-					            session.setAttribute("userid", user.getUserid());
-					            session.setAttribute("transactions", transactions);
+						if(from.getTime()<to.getTime())
+						{
+							System.out.println("from"+from.getDate());
+							System.out.println("to"+to.getDate());
+							try {
+								transactions=service.getTransactions(user.getAccountNo(), from, to);
+								Collections.sort(transactions, new SortbyTransactionDate());
+								System.out.println("Transactions retrieved");
+								if(transactions.size()==0)
+								{
+									transactions=null;
+									request.setAttribute("message", "No Transactions in Date Range");
+									session.setAttribute("username", username);
+						            session.setAttribute("userid", user.getUserid());
+						            session.setAttribute("transactions", transactions);
+								}
+									
+								session.setAttribute("transactions", transactions);
+								dispatcher = request.getRequestDispatcher("transactions.jsp");
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+								System.out.println("inner catch");
+								dispatcher = request.getRequestDispatcher("error.jsp");
 							}
-								
-							session.setAttribute("transactions", transactions);
-							dispatcher = request.getRequestDispatcher("transactions.jsp");
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-							System.out.println("inner catch");
-							dispatcher = request.getRequestDispatcher("error.jsp");
 						}
+						else
+						{
+							request.setAttribute("message", "Select Valid Transaction Dates.");
+							session.setAttribute("username", username);
+				            session.setAttribute("userid", user.getUserid());
+				            session.setAttribute("transactions", transactions);
+							dispatcher = request.getRequestDispatcher("transactions.jsp");
+							dispatcher.forward(request, response);
+						}
+						
 						
 						
 					} catch (ParseException e) {

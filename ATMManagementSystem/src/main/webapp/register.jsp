@@ -3,7 +3,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>ATM Management System</title>
+  <title>Online Banking System</title>
   <link rel="stylesheet" type="text/css" href="style1.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -101,7 +101,7 @@
 </head>
 <body>
   <div class="main fade-in">
-    <h1>ATM Management System</h1>
+    <h1>Online Banking System</h1>
     <h3>You Can Register Here</h3>
     <form action="RegisterServlet" method="post" onsubmit="return validateRegistrationForm()">
       <div class="form-group">
