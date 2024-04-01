@@ -69,8 +69,10 @@ public class RegisterServlet extends HttpServlet {
 				user.setGender(Gender.FEMALE);
 			else
 				user.setGender(Gender.NOT_SPECIFIED);
-			user.setRoleid(2001);
-			user.setRolename("USER");
+			user.setRoleid(2);
+			user.setEmail(request.getParameter("email"));
+			user.setPhone(request.getParameter("phone"));
+			//user.setRolename("Customer");
 			user.setStatus(true);
 			
 			

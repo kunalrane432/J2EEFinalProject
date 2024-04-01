@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import com.humber.atm.dao.LoginDAO;
+import com.humber.atm.model.User;
 
 
 /**
@@ -50,21 +51,25 @@ public class LoginServlet extends HttpServlet {
 		
 		LoginDAO loginDAO=new LoginDAO();
 		RequestDispatcher dispatcher = null;
-		
+		HttpSession session = request.getSession();
 		System.out.println("USERNAME :"+username);
 		System.out.println("password :"+password);
 		try {
-			if(loginDAO.getUserActiveStatus(username,password))
+			User user=loginDAO.getUserActiveStatus(username,password);
+			if(user!=null)
 			{
 				System.out.println("Credentials Successful");
-				HttpSession session = request.getSession();
+				
 	            session.setAttribute("username", username);
-				dispatcher = request.getRequestDispatcher("services.jsp");
+	            session.setAttribute("userid", user.getUserid());
+	            session.setAttribute("user", user);
+	            dispatcher = request.getRequestDispatcher("services.jsp");
 			}
 			else
 			{
 				System.out.println("User does not exist");
-				dispatcher = request.getRequestDispatcher("register.jsp");
+				request.setAttribute("message", "Invalid Username or Password");
+				dispatcher = request.getRequestDispatcher("login.jsp");
 			}
 			//dispatcher.forward(request, response);
 		} catch (SQLException e) {
