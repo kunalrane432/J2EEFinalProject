@@ -22,6 +22,7 @@ CREATE TABLE atm_management.Transactions (transactionid varchar(255) not null, a
 
 CREATE TABLE atm_management.Account (userid int not null, account_no VARCHAR(255) not null,account_type varchar(255),amount double, primary key (account_no,userid,account_type),FOREIGN KEY (userid) REFERENCES User(userid));
 
+insert into atm_management.Roles values(1,"admin");
 insert into atm_management.Roles values(2,"user");
 
 
